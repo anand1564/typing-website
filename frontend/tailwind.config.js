@@ -5,7 +5,9 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        monkeytypeGray: '#2d2d2d'
+        customGray: "#646669",
+        customBg:"#2d2d2d",
+        customIcon:"#D1D0C5"
       },
     },
   },
