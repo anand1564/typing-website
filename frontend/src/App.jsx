@@ -5,6 +5,7 @@ function App() {
 
   return (
     <div className='bg-customBg min-h-screen w-full'>
+      <Navbar />
       <Typing />
     </div>
   )

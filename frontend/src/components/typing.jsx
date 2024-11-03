@@ -8,10 +8,15 @@ export default function Typing() {
   const [incorrectChars,setIncorrectChars]=useState(0);
   const [isCompleted,setIsCompleted]=useState(false);
   const [wpm,setWpm]=useState(0); 
+  const [time,setTime] = useState(0);
+  const [timerOn,setTimerOn] = useState(false);
 
 
   const handleKeyPress = useCallback((e) => {
     const currentIndex = typedChars.length;
+    if(!timerOn){
+      setTimerOn(true);
+    }
     if (currentIndex < quote.length) {
       setTypedChars(prev => [
         ...prev,
@@ -21,10 +26,23 @@ export default function Typing() {
   }, [typedChars]);
    useEffect(()=>{
     if(typedChars.length===quote.length){
+      setWpm((quote.length)/5/(time/60));
       setIsCompleted(true);
+      setTimerOn(false);
     }
    },[typedChars])
    
+  useEffect(()=>{
+    if(timerOn){
+      setTimeout(()=>{
+        setTime(prev=>prev+1);
+      },1000);
+    }else{
+      setTime(0);
+    }
+    return ()=>clearTimeout();
+  },[timerOn,time])
+
   useEffect(() => {
     window.addEventListener('keypress', handleKeyPress);
     return () => {
@@ -34,8 +52,8 @@ export default function Typing() {
 
   return (
     <div className="h-screen flex flex-col">
-<img src="/monkeytype.webp" alt='monkeytype' height={100} width={100} />
       <div className="flex items-center flex-col justify-center flex-grow">
+        <h1 className='text-2xl'>Time: {time}</h1>
         <p className="text-2xl">
           {quote.split('').map((char, index) => {
             const typed = typedChars[index];
